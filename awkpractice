@@ -1,0 +1,4 @@
+/^b/ {
+	str = str $1 " " # string concatenate
+}
+END {print str}
