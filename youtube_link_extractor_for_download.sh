@@ -8,5 +8,6 @@
 sed -e 's/^[[:space:]].*\(\/watch\?v=.*\)index.*/http:\/\/ssyoutube.com\1/g;s/^[^h].*$//g' ${1} > ${1}_new.txt
 cat -s ${1}_new.txt > ${1}_replaced.txt
 rm ${1}_new.txt 
+mv -f ${1}_replaced.txt ${1}
 
 
