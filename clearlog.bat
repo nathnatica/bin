@@ -1,0 +1,14 @@
+clearlog.py c:\conf\jp-admin
+clearlog.py c:\conf\jp-central
+clearlog.py c:\conf\jp-front
+clearlog.py c:\conf\tw-admin
+clearlog.py c:\conf\tw-central
+clearlog.py c:\conf\tw-front
+clearlog.py c:\conf\uk-admin
+clearlog.py c:\conf\uk-central
+clearlog.py c:\conf\uk-front
+clearlog.py c:\conf\us-admin
+clearlog.py c:\conf\us-central
+clearlog.py c:\conf\us-front
+clearlog.py c:\git_work\excelTester\target
+clearlog.py c:\git_work\releaseRequest\target
