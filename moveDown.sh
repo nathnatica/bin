@@ -12,10 +12,14 @@ if [ ! -d "$DEST" ];then
   mkdir $DEST
 fi
 
-FILES=`find . -maxdepth 1 -type f | grep -i $KEYWORD`
+ORI_IFS=$IFS
+IFS=$'\t\n'
+
+FILES=`find . -maxdepth 1 -type f -iname "*$KEYWORD*"`
 
 for f in $FILES
 do
-  mv $SRC/$f $DEST/$f
+  mv "$SRC/$f" "$DEST/$f"
 done
 
+IFS=$ORI_IFS
