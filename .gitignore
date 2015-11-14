@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 *~
 .idea
 *.iml
@@ -5,3 +6,11 @@
 .DS_Store
 .bak
 .txt
+=======
+*~
+.idea
+*.iml
+.pyc
+.DS_Store
+.bak
+>>>>>>> 62976877c822b904cd20ed62a1c7082bea35d77b
