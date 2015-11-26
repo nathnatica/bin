@@ -12,7 +12,7 @@ import string
 if len(sys.argv) < 3:
 	sys.exit("Usage python command.py arg1(domain) arg2(article no.)")
 
-url = sys.argv[1] + "/" + sys.argv[2]
+url = sys.argv[1] + sys.argv[2]
 
 outDir = "/Users/natica/Downloads/" + sys.argv[1] + "_" + sys.argv[2]
 

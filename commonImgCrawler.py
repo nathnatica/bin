@@ -17,13 +17,13 @@ requests.adapters.DEFAULT_RETRIES = 30
 
 latestImgUrl = ""
 
-def crawlingPage(section, domain, articleId):
+def crawlingPage(section, domain, articleId, regex):
+	hasImage = False
 	outDir = config.get(section,'out.dir') + domain[:domain.find("/")] + "/" + articleId
 	url = domain + articleId
 	print "[CRAWLING PAGE] " + url
 
-	global imgUrlPattern
-	p = re.compile(imgUrlPattern)
+	p = re.compile(regex)
 
 	response = requests.get("http://" + url, stream=True)
 	for line in response.iter_lines() :
@@ -39,24 +39,43 @@ def crawlingPage(section, domain, articleId):
 					continue
 				else :
 					latestImgUrl = imgurl
-				imgurl = imgurl.replace(".jpg","")
-				outFilePath = outDir + "/" + imgurl[imgurl.rfind("/")+1:] + ".jpg"
+				#imgurl = imgurl.replace(".jpg","")
+				#outFilePath = outDir + "/" + imgurl[imgurl.rfind("/")+1:] + ".jpg"
+				outFilePath = outDir + "/" + imgurl[imgurl.rfind("/")+1:]
+				if (outFilePath.endswith(".jpg") == False):
+					outFilePath = outFilePath + ".jpg"
 				if (os.path.isfile(outFilePath)):
 					print "[SKIPPED] " + outFilePath
 				else :
 					urllib.urlretrieve(imgurl, outFilePath)		
 					print imgurl
+					hasImage = True
 	if (os.path.isdir(outDir)) :
 		path, dir, files = os.walk(outDir).next()
 		if (len(files) < 1) :
 			os.rmdir(outDir)
+	return hasImage
 
 
 
-crawlingPageCount = 10
+
+def crawlingSite(section, url, start, end, regex) :
+	newEnd = end
+	print "CRAWLING SITE FROM " + str(start) + " TO " + str(end)
+	for i in range(start, end + 1) :
+		if i > 0 :
+			if crawlingPage(section, url, str(i), regex) :
+				newEnd = i + crawlingPageCount 
+				print "NEW END INDEX UPDATED TO " + str(newEnd)
+	if (end != newEnd) :
+		crawlingSite(section, url, end + 1, newEnd, regex)
+
+
+
+crawlingPageCount = 40
 startFromBefore = 10
 
-def crawlingSites(section, ) :
+def crawlingSites(section, regex) :
 	fi = open(config.get(section,'out.file'),"r")
 	if (os.path.exists(config.get(section,'out.temp.file'))) :
 		os.remove(config.get(section,'out.temp.file'))
@@ -80,10 +99,11 @@ def crawlingSites(section, ) :
 							maxArticleId = tmp
 					except :
 						continue
-
-			for i in range(maxArticleId - startFromBefore, maxArticleId + 1 + crawlingPageCount) :
-				crawlingPage(section, url, str(i))				
-			fo.write(url + "\t" + str(i) + "\n")
+			crawlingSite(section, url, maxArticleId - startFromBefore, maxArticleId + crawlingPageCount, regex)
+#			for i in range(maxArticleId - startFromBefore, maxArticleId + 1 + crawlingPageCount) :
+#				if i > 0 :
+#					crawlingPage(section, url, str(i), regex)				
+			fo.write(url + "\t" + str(maxArticleId + crawlingPageCount) + "\n")
 	fo.close()
 	fi.close()
 
