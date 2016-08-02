@@ -20,7 +20,9 @@ def flushdir(dir):
 			flushdir(fullpath)
 		if os.path.isfile(fullpath) and f.endswith('log'):
 			file_modified = datetime.datetime.fromtimestamp(os.path.getmtime(fullpath))
-			if (datetime.datetime.now() - file_modified > datetime.timedelta(hours=12)):
+#			if (datetime.datetime.now() - file_modified > datetime.timedelta(hours=12)):
+#			if (datetime.datetime.now() - file_modified > datetime.timedelta(minutes=1)):
+			if (datetime.datetime.now() - file_modified > datetime.timedelta(seconds=5)):
 				try:
 					os.remove(fullpath)
 				except:
