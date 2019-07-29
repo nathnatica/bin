@@ -1,6 +1,7 @@
 #!/bin/bash
 # copy empty excel file and open
 
+cd
 TEMPLATE="desktop/__etcs/empty.xlsx"
 FILE="desktop/`date '+%Y%m%d'`_調査"
 
@@ -17,4 +18,4 @@ fi
 
 cp ${TEMPLATE} ${FILE}.xlsx
 cygstart -o ${FILE}.xlsx
-
+cd -
